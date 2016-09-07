@@ -60,7 +60,7 @@
   box-sizing: border-box;
   padding: 0.25rem;
   margin: 0;
-  width: 33.33%;
+  width: 50%;
 }
 
 .imgWrap {
@@ -76,6 +76,12 @@
   left: 0;
   background-position: center;
   background-size: cover;
+}
+
+@media (min-width: 600px) {
+  .item {
+    width: 33.33%;
+  }
 }
 
 @media (min-width: 900px) {
