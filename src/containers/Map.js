@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import debounce from 'lodash.debounce';
 import GoogleMapsLoader from 'google-maps';
+import Loader from 'halogen/PulseLoader';
 import { fetchFeed } from '../redux/feed/actions';
 import { updatePlace, updateMarkers } from '../redux/places/actions';
 import styles from './Map.css';
@@ -23,14 +24,16 @@ class Map extends Component {
     this.state = { lat: 41.8847073, lng: -87.646780 };
     this._updatePlaces = this._updatePlaces.bind(this);
 
-    navigator.geolocation.getCurrentPosition(({ coords }) => {
-      const { latitude: lat, longitude: lng } = coords;
-      this.setState({ lat, lng });
+    if (typeof navigator.geolocation !== 'undefined') {
+      navigator.geolocation.getCurrentPosition(({ coords }) => {
+        const { latitude: lat, longitude: lng } = coords;
+        this.setState({ lat, lng });
 
-      if (this.map) {
-        this.map.setCenter({ lat, lng });
-      }
-    });
+        if (this.map) {
+          this.map.setCenter({ lat, lng });
+        }
+      });
+    }
 
     GoogleMapsLoader.load(google => {
       this.google = google;
@@ -97,7 +100,10 @@ class Map extends Component {
       <div
         ref={c => this._div = c}
         className={styles.root}
-      />
+      >
+        <Loader color="#111" size="16px" margin="8px"/>
+        <h3>Loading Map</h3>
+      </div>
     );
   }
 }

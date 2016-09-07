@@ -8,29 +8,23 @@ import Loader from 'halogen/PulseLoader';
 import styles from './Tweets.css';
 
 export class Tweets extends Component {
-  renderPlace: () => any;
   renderContent: () => any;
 
   constructor(props: any) {
     super(props);
-    this.renderPlace = this.renderPlace.bind(this);
     this.renderContent = this.renderContent.bind(this);
   }
 
-  renderPlace() {
-    const { place } = this.props;
+  renderContent() {
+    const { images, isError, isLoaded, place } = this.props;
 
-    return place ? (
+    const placeHtml = place ? (
       <div className={styles.place}>
         <h1>{place.name}</h1>
         <h2>Categories</h2>
         <p>{place.types.join(', ')}</p>
       </div>
     ) : null;
-  }
-
-  renderContent(placeHtml: any) {
-    const { images, isError, isLoaded } = this.props;
 
     if (isError) {
       return (
@@ -72,18 +66,16 @@ export class Tweets extends Component {
 
   render() {
     const { isLoading } = this.props;
-    const placeHtml = this.renderPlace();
 
     const loadingHtml = isLoading ? (
       <div className={styles.loader}>
         <Loader color="#111" size="16px" margin="8px"/>
-        {placeHtml}
       </div>
     ) : null;
 
     return (
       <div className={styles.root}>
-        {this.renderContent(placeHtml)}
+        {this.renderContent()}
         {loadingHtml}
       </div>
     );
